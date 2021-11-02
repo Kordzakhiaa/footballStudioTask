@@ -22,4 +22,4 @@ class Game(models.Model):
         ordering = ['-created_date']
 
     def __str__(self):
-        return f'{self.player} - {self.bet_choice} - {self.bet_amount}'
+        return f'{self.player} - {self.bet_choice} - {self.bet_amount}$'

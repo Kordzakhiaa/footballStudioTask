@@ -95,6 +95,18 @@ class FootballStudioGame(Deck):
             self.draw_win_count += 1
             return 'DRAW'
 
+    @staticmethod
+    def calculate(game, request_user, player) -> None:
+        """ Method that calculates money amount won or lost after bet """
+        if game.winner() == 'DRAW' and game.winner() == player.bet_choice:
+            request_user.balance += player.bet_amount * 11
+        elif game.winner() == 'DRAW' and game.winner() != player.bet_choice:
+            request_user.balance += player.bet_amount / 2
+        elif game.winner() != 'DRAW' and game.winner() == player.bet_choice:
+            request_user.balance += player.bet_amount * 2
+        elif game.winner() != player.bet_choice:
+            request_user.balance -= player.bet_amount
+
 
 def main():
     """ TESTING """
@@ -110,8 +122,6 @@ def main():
 
     print(c.winner())
 
-
-game = FootballStudioGame()
 
 if __name__ == '__main__':
     main()

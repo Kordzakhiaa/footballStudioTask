@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from accounts.models import Account
 from footballStudio.cards import FootballStudioGame, Deck
 from footballStudio.models import Game
 from footballStudio.serializers import GameSerializer
@@ -50,16 +51,8 @@ class FootballStudioBetView(APIView):
                 raise ValidationError({'balance': 'Balance is less than amount'})
 
             game.home_card = game.deck.pop()
-            game.away_card = game.deck.pop()
-
-            if game.winner() == 'DRAW' and game.winner() == player.bet_choice:
-                request.user.balance += player.bet_amount * 11
-            elif game.winner() == 'DRAW' and game.winner() != player.bet_choice:
-                request.user.balance += player.bet_amount / 2
-            elif game.winner() != 'DRAW' and game.winner() == player.bet_choice:
-                request.user.balance += player.bet_amount * 2
-            elif game.winner() != player.bet_choice:
-                request.user.balance -= player.bet_amount
+            game.away_card = game.deck.pop()  # POP CARDS FROM DECK EVERY NEX BET
+            game.calculate(game=game, request_user=request.user, player=player)
 
             request.user.save()
 
