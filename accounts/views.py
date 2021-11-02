@@ -11,7 +11,7 @@ from accounts.serializers import RegistrationSerializer
 class RegistrationView(APIView):
     """ Registration Page """
 
-    def post(self, request, **kwargs):
+    def post(self, request, **kwargs) -> 'Response':
         """
         :returns appropriate HTTP Response. If everything is valid status=200 otherwise status=400
         """
@@ -27,11 +27,12 @@ class LoginView(APIView):
     """ Custom login """
 
     @staticmethod
-    def get_tokens_for_user(user):
+    def get_tokens_for_user(user) -> 'RefreshToken':
+        """ :returns refresh token """
         refresh = RefreshToken.for_user(user)
         return refresh
 
-    def post(self, request):
+    def post(self, request) -> 'Response':
         email = request.data.get('email')
         password = request.data.get('password')
 

@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from footballStudio.cards import FootballStudioGame
+from footballStudio.cards import FootballStudioGame, Deck
 from footballStudio.models import Game
 from footballStudio.serializers import GameSerializer
 
@@ -12,9 +12,16 @@ game = FootballStudioGame()
 
 
 class FootballStudioBetView(APIView):
-    """ Game view that provides betting """
+    """ Football Studio Game view that provides betting """
 
     permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def check_deck() -> bool:
+        """ Static Method that checks if deck is less than 2. If it is it will charge """
+        if len(game.deck) <= 2:
+            return True
+        return False
 
     def get(self, request):
         return Response(
@@ -26,6 +33,9 @@ class FootballStudioBetView(APIView):
         )
 
     def post(self, request, **kwargs):
+        if self.check_deck():
+            game.deck = Deck().deck()
+
         serializer = GameSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -64,11 +74,3 @@ class FootballStudioBetView(APIView):
             }, status=status.HTTP_200_OK)
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-'''
-{
-    "bet_choice": "HOME",
-    "bet_amount": 10
-}
-'''

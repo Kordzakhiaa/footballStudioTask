@@ -27,7 +27,6 @@ class Card:
 
 
 class CardSerializer:
-    """ @TODO: doc """
 
     def __init__(self, rank: int) -> None:
         self.rank = rank
@@ -48,7 +47,7 @@ class CardSerializer:
 
 
 class Deck:
-    """ @TODO: doc """
+    """ Class Deck that initializes and then shuffles deck of cards """
 
     def __init__(self) -> None:
         self.deck = [str(Card((CardSerializer(rank).serialize()), suit.value)) for rank in range(2, 15)
@@ -57,7 +56,7 @@ class Deck:
 
 
 class FootballStudioGame(Deck):
-    """ @TODO: Doc """
+    """ Main class for gambling game football studio game """
 
     home_card = None
     away_card = None
@@ -111,6 +110,8 @@ def main():
 
     print(c.winner())
 
+
+game = FootballStudioGame()
 
 if __name__ == '__main__':
     main()
