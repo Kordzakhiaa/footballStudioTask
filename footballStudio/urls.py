@@ -1,9 +1,10 @@
 from django.urls import path
 
-from footballStudio.views import FootballStudioGameView
+from footballStudio.views import FootballStudioTableView, FootballStudioBetView
 
 app_name: str = 'football_studio'
 
 urlpatterns = [
-    path('football_studio/', FootballStudioGameView.as_view(), name='football_studio_view')
+    path('table/', FootballStudioTableView.as_view(), name='game_table_page'),
+    path('bet/', FootballStudioBetView.as_view(), name='game_bet_page')
 ]
