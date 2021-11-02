@@ -63,7 +63,7 @@ class FootballStudioGame(Deck):
     away_card = None
     away_win_count = 0
     home_win_count = 0
-    draw_count = 0
+    draw_win_count = 0
 
     @staticmethod
     def to_int(card_rank: str) -> int:
@@ -86,13 +86,13 @@ class FootballStudioGame(Deck):
 
         if self.to_int(home_card_rank) > self.to_int(away_card_rank):
             self.home_win_count += 1
-            return 'home'
+            return 'HOME'
         elif self.to_int(home_card_rank) < self.to_int(away_card_rank):
             self.away_win_count += 1
-            return 'away'
+            return 'AWAY'
         elif self.to_int(home_card_rank) == self.to_int(away_card_rank):
-            self.draw_count += 1
-            return 'draw'
+            self.draw_win_count += 1
+            return 'DRAW'
 
 
 if __name__ == '__main__':
