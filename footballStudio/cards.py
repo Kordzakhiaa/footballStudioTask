@@ -80,7 +80,9 @@ class FootballStudioGame(Deck):
         return int(r)
 
     def winner(self) -> str:
-        """ @TODO: doc """
+        """
+        :returns type:str winner table combination (HOME, AWAY, DRAW)
+        """
         home_card_rank: str = self.home_card[:-1]
         away_card_rank: str = self.away_card[:-1]
 
@@ -95,7 +97,8 @@ class FootballStudioGame(Deck):
             return 'DRAW'
 
 
-if __name__ == '__main__':
+def main():
+    """ TESTING """
     c = FootballStudioGame()
     assert c.to_int('J') == 11
     assert c.to_int('Q') == 12
@@ -107,3 +110,7 @@ if __name__ == '__main__':
     c.away_card = c.deck.pop()
 
     print(c.winner())
+
+
+if __name__ == '__main__':
+    main()

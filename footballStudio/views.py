@@ -11,32 +11,15 @@ from footballStudio.serializers import GameSerializer
 game = FootballStudioGame()
 
 
-class FootballStudioTableView(APIView):
-    """ @TODO: doc """
-
-    def get(self, request, **kwargs):
-        # cards.home_card = cards.deck.pop()
-        # cards.away_card = cards.deck.pop()
-        #
-        # data = {
-        #     'deck_length': len(cards.deck),
-        #     'winner': cards.winner(),
-        #     'home_card': cards.home_card,
-        #     'away_card': cards.away_card,
-        #     'away_count': cards.away_win_count,
-        #     'home_count': cards.home_win_count,
-        #     'draw_count': cards.draw_win_count,
-        # }
-        # return Response(data=data, status=status.HTTP_200_OK)
-        return Response(data={'test': 'test'}, status=status.HTTP_200_OK)
-
-
 class FootballStudioBetView(APIView):
+    """ Game view that provides betting """
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         return Response(
             {
+                'user': str(request.user),
                 'bet_choice': str(Game.BetChoices.choices),
                 'balance': request.user.balance
             }
