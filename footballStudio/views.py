@@ -4,7 +4,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from accounts.models import Account
 from footballStudio.cards import FootballStudioGame, Deck
 from footballStudio.models import Game
 from footballStudio.serializers import GameSerializer
@@ -35,14 +34,15 @@ class FootballStudioBetView(APIView):
 
     def post(self, request, **kwargs):
         if self.check_deck():
-            game.deck = Deck().deck()
+            game.deck = Deck().deck
 
         serializer = GameSerializer(data=request.data)
 
         if serializer.is_valid():
             player = serializer.save(player=request.user)
 
-            # @TODO create method that will provide this if/elif block
+            # @TODO: create method that will provide this if/elif block
+            # @TODO: if bet_choice == None raise error
             if request.user.balance == 0:
                 raise ValidationError({'balance': 'Balance is empty'})
             elif player.bet_amount < 5:
@@ -51,12 +51,13 @@ class FootballStudioBetView(APIView):
                 raise ValidationError({'balance': 'Balance is less than amount'})
 
             game.home_card = game.deck.pop()
-            game.away_card = game.deck.pop()  # POP CARDS FROM DECK EVERY NEX BET
+            game.away_card = game.deck.pop()  # POP CARDS FROM DECK EVERY NEXT BET
             game.calculate(game=game, request_user=request.user, player=player)
 
             request.user.save()
 
             return Response(data={
+                'deck': len(game.deck),
                 'serializer data': serializer.data,
                 'winner': game.winner(),
                 'my bet choice': player.bet_choice,
